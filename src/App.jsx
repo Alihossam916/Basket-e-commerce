@@ -5,6 +5,7 @@ import Home from "./components/home";
 import Contact from "./components/contact";
 import LoginForm from "./components/login";
 import SignupForm from "./components/signUp";
+import About from "./components/about";
 
 // import react-router components here
 import { Routes, Route } from "react-router";
@@ -26,7 +27,7 @@ function App() {
 
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/about" element={<h1>About Page</h1>} />
+        <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/login" element={<LoginForm />} />
         <Route path="/signup" element={<SignupForm />} />
