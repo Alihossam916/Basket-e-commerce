@@ -96,8 +96,9 @@ export default function Header() {
             </Menu>
             <div className="flex flex-row justify-center items-center gap-2">
               <p>price</p>
-              <Link to="/cart" className="hover:text-primary">
-                <button className="bg-[#FFF1EE] text-price-sale p-2 rounded-4xl cursor-pointer">
+              <Link to="/cart">
+                <button className="relative bg-[#FFF1EE] text-price-sale p-2 rounded-4xl cursor-pointer">
+                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold px-1 rounded-full">1</span>
                   <ShoppingBasketOutlinedIcon />
                 </button>
               </Link>

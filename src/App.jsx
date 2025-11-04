@@ -6,6 +6,8 @@ import Contact from "./components/contact";
 import LoginForm from "./components/login";
 import SignupForm from "./components/signUp";
 import About from "./components/about";
+import Cart from "./components/cart";
+import Checkout from "./components/checkout";
 
 // import react-router components here
 import { Routes, Route } from "react-router";
@@ -31,6 +33,8 @@ function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/login" element={<LoginForm />} />
         <Route path="/signup" element={<SignupForm />} />
+        <Route path="/cart" element={<Cart />} />
+        <Route path="/checkout" element={<Checkout />} />
       </Routes>
 
       <Footer />

@@ -8,7 +8,7 @@ import ContactForm from "./contactForm";
 
 export default function Contact() {
   return (
-    <div className="flex flex-col items-center justify-center w-full my-10">
+    <main className="flex flex-col items-center justify-center w-full my-10">
       <h1 className="text-4xl">Get In Touch</h1>
       <p className="text-center">
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit, ut
@@ -34,6 +34,6 @@ export default function Contact() {
       </div>
       {/* add the contact form here */}
       <ContactForm />
-    </div>
+    </main>
   );
 }
