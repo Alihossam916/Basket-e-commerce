@@ -28,7 +28,7 @@ export default function CheckoutForm() {
 
   return (
     <form
-      className="w-full border-b-2 lg:border-b-0 lg:border-r-2 border-gray-200 p-6"
+      className="w-full border-b-2 lg:border-b-0 lg:border-r-2 border-gray-200 pb-6  sm:p-6"
       onSubmit={handleSubmit}
     >
       {/* contact info */}

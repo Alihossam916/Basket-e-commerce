@@ -3,21 +3,13 @@ import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 
-import { useState } from "react";
-
 // components
 import CheckoutForm from "./checkoutForm";
 
 export default function Checkout() {
-  const [checkoutFormData, setCheckoutFormData] = useState({
-    fName: "",
-    lName: "",
-    contactInfo: "",
-    address: "",
-  });
 
   return (
-    <main className="checkout-container flex flex-col lg:flex-row justify-center items-start gap-6 my-10 mx-20 lg:mx-50">
+    <main className="checkout-container flex flex-col lg:flex-row justify-center items-start gap-6 my-10 mx-5 sm:mx-20 lg:mx-50">
       <CheckoutForm />
       <aside className="w-full flex flex-col gap-4">
         <h2 className="text-2xl font-bold">Order Summary</h2>

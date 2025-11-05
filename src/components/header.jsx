@@ -13,6 +13,9 @@ import Button from "@mui/material/Button";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import ShoppingBasketOutlinedIcon from "@mui/icons-material/ShoppingBasketOutlined";
 
+// Header component
+import TemporaryDrawer from "./sideNav";
+
 export default function Header() {
   // profile menu state
   const [profileAnchorEl, setProfileAnchorEl] = useState(null);
@@ -43,19 +46,16 @@ export default function Header() {
           Due to current circumstances, there may be slight delays in order
           processing
         </p>
-        <select className="border-black border-2">
-          <option className="text-text-primary">English</option>
-          <option className="text-text-primary">Arabic</option>
-        </select>
       </div>
 
-      <div className="w-full flex flex-col items-center mx-auto gap-4 mt-4 shadow-md">
+      <div className="w-full flex flex-col items-center gap-4 mt-4 shadow-md">
         {/* Logo, Search Bar, profile and shopping cart */}
-        <div className="w-full flex flex-row justify-center items-center gap-6">
+        <div className="w-full flex flex-row justify-around md:justify-center items-center gap-6 p-2">
+          <TemporaryDrawer />
           <Link to="/">
             <button className="cursor-pointer">
               <img
-                className="h-16 ml-10 mt-2 mb-2"
+                className="h-16 mt-2 mb-2"
                 src="/imgs/image_2025-10-23_003201168.png"
                 alt="Logo"
               />
@@ -63,7 +63,7 @@ export default function Header() {
           </Link>
           <TextField
             id="filled-basic"
-            className="w-[55%]"
+            className="w-[55%] hidden! md:flex!"
             label="Search for products"
             variant="filled"
           />
@@ -91,14 +91,20 @@ export default function Header() {
                 },
               }}
             >
-              <MenuItem onClick={handleProfileMenuClose}><NavLink to="/login">Log In</NavLink></MenuItem>
-              <MenuItem onClick={handleProfileMenuClose}><NavLink to="/signup">Sign Up</NavLink></MenuItem>
+              <MenuItem onClick={handleProfileMenuClose}>
+                <NavLink to="/login">Log In</NavLink>
+              </MenuItem>
+              <MenuItem onClick={handleProfileMenuClose}>
+                <NavLink to="/signup">Sign Up</NavLink>
+              </MenuItem>
             </Menu>
             <div className="flex flex-row justify-center items-center gap-2">
               <p>price</p>
               <Link to="/cart">
                 <button className="relative bg-[#FFF1EE] text-price-sale p-2 rounded-4xl cursor-pointer">
-                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold px-1 rounded-full">1</span>
+                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold px-1 rounded-full">
+                    1
+                  </span>
                   <ShoppingBasketOutlinedIcon />
                 </button>
               </Link>
@@ -107,7 +113,7 @@ export default function Header() {
         </div>
 
         {/* Navigation Links */}
-        <nav>
+        <nav className="hidden md:block">
           <ul className="w-full flex flex-row items-center gap-4 text-text-primary py-3 text-lg">
             <li>
               <NavLink to="/" className="hover:text-primary">
@@ -141,22 +147,34 @@ export default function Header() {
               </NavLink>
             </li>
             <li>
-              <NavLink to="/" className="hover:text-primary focus:bg-secondary p-2 rounded-2xl">
+              <NavLink
+                to="/"
+                className="hover:text-primary focus:bg-secondary p-2 rounded-2xl"
+              >
                 Home
               </NavLink>
             </li>
             <li>
-              <NavLink to="/products" className="hover:text-primary focus:bg-secondary p-2 rounded-2xl">
+              <NavLink
+                to="/products"
+                className="hover:text-primary focus:bg-secondary p-2 rounded-2xl"
+              >
                 Products
               </NavLink>
             </li>
             <li>
-              <NavLink to="/about" className="hover:text-primary focus:bg-secondary p-2 rounded-2xl">
+              <NavLink
+                to="/about"
+                className="hover:text-primary focus:bg-secondary p-2 rounded-2xl"
+              >
                 About
               </NavLink>
             </li>
             <li>
-              <NavLink to="/contact" className="hover:text-primary focus:bg-secondary p-2 rounded-2xl">
+              <NavLink
+                to="/contact"
+                className="hover:text-primary focus:bg-secondary p-2 rounded-2xl"
+              >
                 Contact
               </NavLink>
             </li>
