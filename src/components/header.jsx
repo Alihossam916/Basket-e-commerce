@@ -50,7 +50,7 @@ export default function Header() {
 
       <div className="w-full flex flex-col items-center gap-4 mt-4 shadow-md">
         {/* Logo, Search Bar, profile and shopping cart */}
-        <div className="w-full flex flex-row justify-around md:justify-center items-center gap-6 p-2">
+        <div className="w-full flex flex-row justify-around md:justify-center items-center gap-0 sm:gap-6 p-2">
           <TemporaryDrawer />
           <Link to="/">
             <button className="cursor-pointer">

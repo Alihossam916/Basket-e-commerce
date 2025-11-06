@@ -8,6 +8,8 @@ import SignupForm from "./components/signUp";
 import About from "./components/about";
 import Cart from "./components/cart";
 import Checkout from "./components/checkout";
+import Products from "./components/products";
+// import "./App.css";
 
 // import react-router components here
 import { Routes, Route } from "react-router";
@@ -29,6 +31,7 @@ function App() {
 
       <Routes>
         <Route path="/" index element={<Home />} />
+        <Route path="/products" element={<Products />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/login" element={<LoginForm />} />
