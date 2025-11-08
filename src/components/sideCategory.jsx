@@ -11,6 +11,7 @@ import { IconButton, Toolbar } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 
 import { useState } from "react";
+import { Maximize } from "@mui/icons-material";
 
 export default function TemporaryDrawer() {
   const [open, setOpen] = useState(false);
@@ -30,7 +31,7 @@ export default function TemporaryDrawer() {
   const availability = ["In Stock", "Low Stock", "Out of Stock"];
 
   const DrawerList = (
-    <Box sx={{ width: 250 }} role="presentation">
+    <Box role="presentation">
       {/* Add close button */}
       <Toolbar>
         <IconButton onClick={toggleDrawer(false)}>
@@ -54,6 +55,31 @@ export default function TemporaryDrawer() {
         ))}
       </List>
       <Divider />
+      {/* Price Range */}
+      <List>
+        <h3 className="ml-3 text-md font-semibold uppercase">Price Range</h3>
+        <div className="flex items-end m-3 gap-2 max-w-[350px]">
+          <div className="flex flex-col">
+            <label className="text-md mb-2">From</label>
+            <input
+              type="number"
+              placeholder="0"
+              className="w-full bg-gray-200 border border-black p-2"
+            />
+          </div>
+          <span className="">-</span>
+          <div className="flex flex-col">
+            <label className="text-md mb-2">To</label>
+            <input
+              type="number"
+              placeholder="0"
+              className="w-full bg-gray-200 border border-black p-2"
+            />
+          </div>
+        </div>
+      </List>
+      <Divider />
+      {/* Product Availability */}
       <List>
         <h3 className="ml-3 text-md font-semibold uppercase">Availability</h3>
         {availability.map((text) => (
@@ -71,7 +97,10 @@ export default function TemporaryDrawer() {
 
   return (
     <div>
-      <IconButton className="md:hidden!" onClick={toggleDrawer(true)}>
+      <IconButton
+        className="flex justify-start! lg:hidden! bg-gray-100! w-full rounded-none!"
+        onClick={toggleDrawer(true)}
+      >
         <MenuIcon fontSize="large" />
       </IconButton>
       <Drawer open={open} onClose={toggleDrawer(false)}>
