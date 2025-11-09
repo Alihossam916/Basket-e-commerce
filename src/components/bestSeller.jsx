@@ -6,7 +6,7 @@ export default function BestSeller() {
     {
       imgSrc: "/imgs/image_2025-10-25_155107367.png",
       name: "Zevia Kidz Strawberry Lemonade Zero Calorie…",
-      stock: "(0) IN STOCK",
+      stock: "IN STOCK",
       rating: 3.3,
       reviews: 13,
       price: 4.99,
@@ -15,7 +15,7 @@ export default function BestSeller() {
     {
       imgSrc: "/imgs/image_2025-10-25_155107367.png",
       name: "Zevia Kidz Strawberry Lemonade Zero Calorie…",
-      stock: "(0) IN STOCK",
+      stock: "IN STOCK",
       rating: 1,
       reviews: 2,
       price: 4.99,
@@ -24,7 +24,7 @@ export default function BestSeller() {
     {
       imgSrc: "/imgs/image_2025-10-25_155107367.png",
       name: "Zevia Kidz Strawberry Lemonade Zero Calorie…",
-      stock: "(0) IN STOCK",
+      stock: "IN STOCK",
       rating: 3,
       reviews: 10,
       price: 4.99,
@@ -33,7 +33,7 @@ export default function BestSeller() {
     {
       imgSrc: "/imgs/image_2025-10-25_155107367.png",
       name: "Zevia Kidz Strawberry Lemonade Zero Calorie…",
-      stock: "(0) IN STOCK",
+      stock: "IN STOCK",
       rating: 4.5,
       reviews: 5,
       price: 4.99,
@@ -42,7 +42,7 @@ export default function BestSeller() {
     {
       imgSrc: "/imgs/image_2025-10-25_155107367.png",
       name: "Zevia Kidz Strawberry Lemonade Zero Calorie…",
-      stock: "(0) IN STOCK",
+      stock: "IN STOCK",
       rating: 4.5,
       reviews: 5,
       price: 4.99,
@@ -54,9 +54,9 @@ export default function BestSeller() {
     <section className="flex flex-col items-center w-full gap-4 my-10">
       <h2 className="font-bold text-2xl self-start">Best Sellers</h2>
       <div className="grid grid-cols-[repeat(auto-fit,minmax(230px,1fr))] gap-4 w-full p-4">
-        {itemsData.map((data) => {
+        {itemsData.map((data, index) => {
           return (
-            <button className="relative flex flex-col justify-self-center gap-2 w-[250px] p-4 border rounded items-start text-center cursor-pointer hover:scale-90 transition-all duration-300">
+            <button key={index} className="relative flex flex-col justify-self-center gap-2 w-[250px] p-4 border rounded items-start text-center cursor-pointer hover:scale-90 transition-all duration-300">
               <img src={data.imgSrc} alt={data.name} />
               <h3 className="font-bold text-md text-left">{data.name}</h3>
               <p className="text-xs text-stock-available">{data.stock}</p>
@@ -67,7 +67,7 @@ export default function BestSeller() {
                   precision={0.5}
                   readOnly
                 />
-                <p>{data.reviews} reviews</p>
+                <p>({data.rating})</p>
               </div>
               <div className="flex flex-row gap-2">
                 <p className="text-gray-400 font-bold text-lg line-through">

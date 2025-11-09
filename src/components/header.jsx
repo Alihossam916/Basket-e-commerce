@@ -116,35 +116,35 @@ export default function Header() {
         <nav className="hidden md:block">
           <ul className="w-full flex flex-row items-center gap-4 text-text-primary py-3 text-lg">
             <li>
-              <NavLink to="/" className="hover:text-primary">
-                <Button
-                  className="bg-primary"
-                  id="basic-button"
-                  aria-controls={open ? "basic-menu" : undefined}
-                  aria-haspopup="true"
-                  aria-expanded={categoryOpen ? "true" : undefined}
-                  onClick={handleCategoryMenuClick}
-                >
-                  ALL CATEGORIES
-                </Button>
-                <Menu
-                  id="basic-menu"
-                  anchorEl={categoryAnchorEl}
-                  open={categoryOpen}
-                  onClose={handleCategoryMenuClose}
-                  slotProps={{
-                    list: {
-                      "aria-labelledby": "basic-button",
-                    },
-                  }}
-                >
-                  <MenuItem onClick={handleCategoryMenuClose}>Profile</MenuItem>
-                  <MenuItem onClick={handleCategoryMenuClose}>
-                    My account
-                  </MenuItem>
+              <Button
+                className="bg-primary"
+                id="basic-button"
+                aria-controls={open ? "basic-menu" : undefined}
+                aria-haspopup="true"
+                aria-expanded={categoryOpen ? "true" : undefined}
+                onClick={handleCategoryMenuClick}
+              >
+                ALL CATEGORIES
+              </Button>
+              <Menu
+                id="basic-menu"
+                anchorEl={categoryAnchorEl}
+                open={categoryOpen}
+                onClose={handleCategoryMenuClose}
+                slotProps={{
+                  list: {
+                    "aria-labelledby": "basic-button",
+                  },
+                }}
+              >
+                <MenuItem onClick={handleCategoryMenuClose}>Profile</MenuItem>
+                <MenuItem onClick={handleCategoryMenuClose}>
+                  My account
+                </MenuItem>
+                <NavLink to="/" className="hover:text-primary">
                   <MenuItem onClick={handleCategoryMenuClose}>Logout</MenuItem>
-                </Menu>
-              </NavLink>
+                </NavLink>
+              </Menu>
             </li>
             <li>
               <NavLink

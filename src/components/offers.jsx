@@ -2,12 +2,11 @@
 import Rating from "@mui/material/Rating";
 
 export default function SpecialOffers() {
-
   const itemsData = [
     {
       imgSrc: "/imgs/image_2025-10-25_155107367.png",
       name: "Zevia Kidz Strawberry Lemonade Zero Calorie…",
-      stock: "(0) IN STOCK",
+      stock: "IN STOCK",
       rating: 3.3,
       reviews: 13,
       price: 4.99,
@@ -16,7 +15,7 @@ export default function SpecialOffers() {
     {
       imgSrc: "/imgs/image_2025-10-25_155107367.png",
       name: "Zevia Kidz Strawberry Lemonade Zero Calorie…",
-      stock: "(0) IN STOCK",
+      stock: "IN STOCK",
       rating: 1,
       reviews: 2,
       price: 4.99,
@@ -25,7 +24,7 @@ export default function SpecialOffers() {
     {
       imgSrc: "/imgs/image_2025-10-25_155107367.png",
       name: "Zevia Kidz Strawberry Lemonade Zero Calorie…",
-      stock: "(0) IN STOCK",
+      stock: "IN STOCK",
       rating: 3,
       reviews: 10,
       price: 4.99,
@@ -34,7 +33,7 @@ export default function SpecialOffers() {
     {
       imgSrc: "/imgs/image_2025-10-25_155107367.png",
       name: "Zevia Kidz Strawberry Lemonade Zero Calorie…",
-      stock: "(0) IN STOCK",
+      stock: "IN STOCK",
       rating: 4.5,
       reviews: 5,
       price: 4.99,
@@ -43,7 +42,7 @@ export default function SpecialOffers() {
     {
       imgSrc: "/imgs/image_2025-10-25_155107367.png",
       name: "Zevia Kidz Strawberry Lemonade Zero Calorie…",
-      stock: "(0) IN STOCK",
+      stock: "IN STOCK",
       rating: 4.5,
       reviews: 5,
       price: 4.99,
@@ -58,9 +57,12 @@ export default function SpecialOffers() {
       <div className="flex flex-row justify-start md:justify-center gap-4 w-full overflow-x-auto border-4 border-price-sale p-4">
         {/* Example offer items */}
 
-        {itemsData.map((data) => {
+        {itemsData.map((data, index) => {
           return (
-            <button className="relative flex flex-col gap-2 w-[230px] p-4 border rounded items-start text-center cursor-pointer hover:scale-90 transition-all duration-300">
+            <button
+              key={index}
+              className="relative flex flex-col gap-2 w-[230px] p-4 border rounded items-start text-center cursor-pointer hover:scale-90 transition-all duration-300"
+            >
               <img src={data.imgSrc} alt={data.name} />
               <h3 className="font-bold text-md text-left">{data.name}</h3>
               <p className="text-xs text-stock-available">{data.stock}</p>
@@ -71,7 +73,7 @@ export default function SpecialOffers() {
                   precision={0.5}
                   readOnly
                 />
-                <p>{data.reviews} reviews</p>
+                <p>({data.rating})</p>
               </div>
               <div className="flex flex-row gap-2">
                 <p className="text-gray-400 font-bold text-lg line-through">
@@ -81,7 +83,9 @@ export default function SpecialOffers() {
                   ${(data.price - (data.price * data.offer) / 100).toFixed(2)}
                 </p>
               </div>
-              <p className="absolute top-2 left-2 bg-primary text-white py-1 px-2 rounded">{data.offer}%</p>
+              <p className="absolute top-2 left-2 bg-primary text-white py-1 px-2 rounded">
+                {data.offer}%
+              </p>
             </button>
           );
         })}

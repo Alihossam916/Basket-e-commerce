@@ -11,7 +11,6 @@ import { IconButton, Toolbar } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 
 import { useState } from "react";
-import { Maximize } from "@mui/icons-material";
 
 export default function TemporaryDrawer() {
   const [open, setOpen] = useState(false);
@@ -92,6 +91,23 @@ export default function TemporaryDrawer() {
           </ListItem>
         ))}
       </List>
+      <Divider />
+      <List>
+        {/* filter */}
+          <div className="ml-3 p-2">
+            <label className="mr-2">Sort by:</label>
+            <select className="border border-gray-300 p-2 rounded">
+              <option value="priceLowToHigh">Price: Low to High</option>
+              <option value="priceHighToLow">Price: High to Low</option>
+              <option value="topRated">Top Rated</option>
+            </select>
+          </div>
+      </List>
+      <img
+        src="/imgs/starbucks happy hour.png"
+        alt="starbucks happy hour"
+        className="w-[280px] ml-3"
+      />
     </Box>
   );
 
