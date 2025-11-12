@@ -20,55 +20,7 @@ export default function Products() {
     "category 5",
   ];
 
-  const availability = ["In Stock", "Low Stock", "Out of Stock"];
-
-  const itemsData = [
-    {
-      imgSrc: "/imgs/image_2025-10-25_155107367.png",
-      name: "Zevia Kidz Strawberry Lemonade Zero Calorie…",
-      stock: "IN STOCK",
-      rating: 3.3,
-      reviews: 13,
-      price: 4.99,
-      offer: 70,
-    },
-    {
-      imgSrc: "/imgs/image_2025-10-25_155107367.png",
-      name: "Zevia Kidz Strawberry Lemonade Zero Calorie…",
-      stock: "IN STOCK",
-      rating: 1,
-      reviews: 2,
-      price: 4.99,
-      offer: 10,
-    },
-    {
-      imgSrc: "/imgs/image_2025-10-25_155107367.png",
-      name: "Zevia Kidz Strawberry Lemonade Zero Calorie…",
-      stock: "IN STOCK",
-      rating: 3,
-      reviews: 10,
-      price: 4.99,
-      offer: 20,
-    },
-    {
-      imgSrc: "/imgs/image_2025-10-25_155107367.png",
-      name: "Zevia Kidz Strawberry Lemonade Zero Calorie…",
-      stock: "IN STOCK",
-      rating: 4.5,
-      reviews: 5,
-      price: 4.99,
-      offer: 50,
-    },
-    {
-      imgSrc: "/imgs/image_2025-10-25_155107367.png",
-      name: "Zevia Kidz Strawberry Lemonade Zero Calorie…",
-      stock: "IN STOCK",
-      rating: 4.5,
-      reviews: 5,
-      price: 4.99,
-      offer: 50,
-    },
-  ];
+  const availability = ["In Stock", "Out of Stock"];
 
   return (
     <main className="flex flex-col lg:flex-row gap-10 my-10 mx-12 lg:mx-20">
@@ -165,7 +117,7 @@ export default function Products() {
           </div>
         </div>
         {/* Products List */}
-        <ProductsList itemsData={itemsData} />
+        <ProductsList />
 
         {/* Pagination */}
         <Pagination count={10} color="primary" className="mx-auto" />

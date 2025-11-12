@@ -9,7 +9,13 @@ import About from "./components/about";
 import Cart from "./components/cart";
 import Checkout from "./components/checkout";
 import Products from "./components/products";
-// import "./App.css";
+
+// react imports
+import { useEffect } from "react";
+
+// redux imports
+import { useDispatch } from "react-redux";
+import { fetchDataFromApi } from "./features/api/apiSlice";
 
 // import react-router components here
 import { Routes, Route } from "react-router";
@@ -25,6 +31,12 @@ const theme = createTheme({
 });
 
 function App() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchDataFromApi("https://dummyjson.com/products?limit=0"));
+  }, [dispatch]);
+
   return (
     <ThemeProvider theme={theme}>
       <Header />
