@@ -2,8 +2,15 @@
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 
+// import react router
+import { Link, useNavigate } from "react-router";
+
 // import react hooks
-import { useState } from "react";
+import { useState, useEffect } from "react";
+
+// redux imports
+import { useDispatch, useSelector } from "react-redux";
+import { register } from "../features/userSlice";
 
 export default function SignUpForm() {
   const [signUpData, setSignUpData] = useState({
@@ -11,6 +18,16 @@ export default function SignUpForm() {
     email: "",
     password: "",
   });
+
+  const { isLoggedIn } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigate("/"); // Navigate when signed up successfully
+    }
+  }, [isLoggedIn, navigate]);
 
   const handleChange = (e) => {
     setSignUpData({
@@ -22,7 +39,7 @@ export default function SignUpForm() {
   const handleSubmit = (e) => {
     e.preventDefault();
     // Handle form submission
-    console.log("Form submitted:", signUpData);
+    dispatch(register(signUpData));
   };
 
   return (
@@ -71,6 +88,13 @@ export default function SignUpForm() {
         >
           Sign Up
         </Button>
+      </div>
+      <div className="flex justify-center mt-4">
+        <Link to="/login">
+          <button className="text-primary cursor-pointer hover:underline">
+            Already have an account?
+          </button>
+        </Link>
       </div>
     </form>
   );

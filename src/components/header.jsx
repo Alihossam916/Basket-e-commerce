@@ -16,7 +16,14 @@ import ShoppingBasketOutlinedIcon from "@mui/icons-material/ShoppingBasketOutlin
 // Header component
 import TemporaryDrawer from "./sideNav";
 
+// redux imports
+import { useSelector, useDispatch } from "react-redux";
+import { logOut } from "../features/userSlice";
+
 export default function Header() {
+  // login state from redux
+  const { currentUser } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
   // profile menu state
   const [profileAnchorEl, setProfileAnchorEl] = useState(null);
   const profileOpen = Boolean(profileAnchorEl);
@@ -29,6 +36,12 @@ export default function Header() {
     setProfileAnchorEl(event.currentTarget);
   };
   const handleProfileMenuClose = () => {
+    setProfileAnchorEl(null);
+  };
+  // logout handler
+  const handleLogout = () => {
+    // add logout functionality here
+    dispatch(logOut());
     setProfileAnchorEl(null);
   };
   // category menu handlers
@@ -91,12 +104,28 @@ export default function Header() {
                 },
               }}
             >
-              <MenuItem onClick={handleProfileMenuClose}>
-                <NavLink to="/login">Log In</NavLink>
-              </MenuItem>
-              <MenuItem onClick={handleProfileMenuClose}>
-                <NavLink to="/signup">Sign Up</NavLink>
-              </MenuItem>
+              {currentUser ? (
+                <div>
+                <MenuItem>
+                  <NavLink to="/profile">Profile</NavLink>
+                </MenuItem>
+                <MenuItem>
+                  <NavLink to="/wishlist">Wishlist</NavLink>
+                </MenuItem>
+                <MenuItem onClick={handleLogout}>
+                  <NavLink to="/">Logout</NavLink>
+                </MenuItem>
+                </div>
+              ) : (
+                <div>
+                  <MenuItem onClick={handleProfileMenuClose}>
+                    <NavLink to="/login">Log In</NavLink>
+                  </MenuItem>
+                  <MenuItem onClick={handleProfileMenuClose}>
+                    <NavLink to="/signup">Sign Up</NavLink>
+                  </MenuItem>
+                </div>
+              )}
             </Menu>
             <div className="flex flex-row justify-center items-center gap-2">
               <p>price</p>

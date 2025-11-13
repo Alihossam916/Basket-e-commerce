@@ -3,7 +3,6 @@ import ResponsiveDrawer from "./sideCategory";
 import ProductsList from "./productsList";
 
 // MUI Components
-import Pagination from "@mui/material/Pagination";
 import Box from "@mui/material/Box";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
@@ -11,34 +10,66 @@ import Divider from "@mui/material/Divider";
 import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
 
+// redux imports
+import { useSelector } from "react-redux";
+
+// react imports
+import { useState } from "react";
+
 export default function Products() {
+
+  const { value: filteredProducts } = useSelector((state) => state.api);
+
+  const [ filter, setFilter ] = useState({
+    category: [],
+    priceRange: { min: 0, max: 0 },
+    availability: [],
+    sorting: ""
+  });
+
   const categories = [
-    "category 1",
-    "category 2",
-    "category 3",
-    "category 4",
-    "category 5",
+    "groceries",
+    "fragrances",
+    "smartphones",
+    "laptops",
+    "skincare",
+    "home-decoration",
   ];
 
   const availability = ["In Stock", "Out of Stock"];
 
   return (
     <main className="flex flex-col lg:flex-row gap-10 my-10 mx-12 lg:mx-20">
-      {/* drawer for small screens */}
+      {/* drawer category for small screens */}
       <ResponsiveDrawer />
-      {/* sidebar for large screens */}
+
+      {/* sidebar category for large screens */}
       <aside className="hidden lg:block">
         <Box role="presentation">
           <List>
             <h3 className="ml-3 text-md font-semibold uppercase">
               Product Categories
             </h3>
+            {/* categories */}
             {categories.map((text) => (
               <ListItem key={text}>
                 <FormControlLabel
                   control={<Checkbox />}
                   label={text}
                   className="capitalize"
+                  onChange={(e) => {
+                    if (e.target.checked) {
+                      setFilter((prev) => ({
+                        ...prev,
+                        category: [...prev.category, text],
+                      }));
+                    } else {
+                      setFilter((prev) => ({
+                        ...prev,
+                        category: prev.category.filter((cat) => cat !== text),
+                      }));
+                    }
+                  }}
                 />
               </ListItem>
             ))}
@@ -92,8 +123,9 @@ export default function Products() {
           />
         </Box>
       </aside>
+
       {/* Products Section */}
-      <div className="w-full flex flex-col gap-10">
+      <section className="w-full flex flex-col gap-10">
         <div className="flex flex-col justify-center items-center bg-[url('/imgs/image.png')] bg-cover bg-center bg-no-repeat p-10 h-64 ">
           <h3 className="text-2xl">Organic Meals Prepared</h3>
           <h3 className="font-bold text-2xl">
@@ -106,7 +138,7 @@ export default function Products() {
         {/* filter */}
         <div className="hidden sm:flex flex-row items-center justify-between p-4 bg-gray-100">
           {/* add products count */}
-          <p>products number</p>
+          <p>{filteredProducts.length} products</p>
           <div>
             <label className="mr-2">Sort by:</label>
             <select className="border border-gray-300 p-2 rounded">
@@ -118,10 +150,7 @@ export default function Products() {
         </div>
         {/* Products List */}
         <ProductsList />
-
-        {/* Pagination */}
-        <Pagination count={10} color="primary" className="mx-auto" />
-      </div>
+      </section>
     </main>
   );
 }

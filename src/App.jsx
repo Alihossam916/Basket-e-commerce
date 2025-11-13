@@ -15,7 +15,7 @@ import { useEffect } from "react";
 
 // redux imports
 import { useDispatch } from "react-redux";
-import { fetchDataFromApi } from "./features/api/apiSlice";
+import { fetchDataFromApi } from "./features/apiSlice";
 
 // import react-router components here
 import { Routes, Route } from "react-router";

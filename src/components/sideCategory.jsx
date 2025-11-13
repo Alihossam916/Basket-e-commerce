@@ -10,6 +10,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import { IconButton, Toolbar } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 
+// react imports
 import { useState } from "react";
 
 export default function TemporaryDrawer() {
@@ -19,15 +20,23 @@ export default function TemporaryDrawer() {
     setOpen(newOpen);
   };
 
+  const [ filter, setFilter ] = useState({
+    category: [],
+    priceRange: { min: 0, max: 0 },
+    availability: [],
+    sorting: ""
+  });
+
   const categories = [
-    "category 1",
-    "category 2",
-    "category 3",
-    "category 4",
-    "category 5",
+    "groceries",
+    "fragrances",
+    "smartphones",
+    "laptops",
+    "skincare",
+    "home-decoration",
   ];
 
-  const availability = ["In Stock", "Low Stock", "Out of Stock"];
+  const availability = ["In Stock", "Out of Stock"];
 
   const DrawerList = (
     <Box role="presentation">
