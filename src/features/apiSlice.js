@@ -12,20 +12,29 @@ export const fetchDataFromApi = createAsyncThunk(
         "smartphones",
         "laptops",
         "fragrances",
-        "skincare",
+        "skin-care",
         "groceries",
         "home-decoration",
       ];
-      const filteredProducts = data.products.filter((product) =>
+      const selectedProducts = data.products.filter((product) =>
         allowedCategories.includes(product.category)
       );
-      return filteredProducts;
+      return selectedProducts;
     }
   }
 );
 
 const initialState = {
   value: [],
+  filter: {
+    category: [],
+    priceRange: { min: 0, max: 0 },
+    availability: [],
+    sorting: "lowToHigh",
+    counter: 0,
+    currentPage: 1,
+    itemsPerPage: 12,
+  },
   loading: false,
   error: null,
 };
@@ -33,7 +42,17 @@ const initialState = {
 export const apiSlice = createSlice({
   name: "api",
   initialState,
-  reducers: {},
+  reducers: {
+    changeFilter: (state, action) => {
+      state.filter = action.payload;
+    },
+    changePage: (state, action) => {
+      state.filter.currentPage = action.payload;
+    },
+    resetPagination: (state) => {
+      state.filter.currentPage = 1;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchDataFromApi.pending, (state) => {
@@ -50,5 +69,6 @@ export const apiSlice = createSlice({
       });
   },
 });
+export const { changeFilter, changePage, resetPagination } = apiSlice.actions;
 
 export default apiSlice.reducer;

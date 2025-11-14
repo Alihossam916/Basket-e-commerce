@@ -20,6 +20,7 @@ export const userSlice = createSlice({
         state.currentUser = user;
         localStorage.setItem("currentUser", JSON.stringify(user));
         state.isLoggedIn = true;
+        alert("Login successful!");
       } else {
         alert("Invalid username or password.");
       }

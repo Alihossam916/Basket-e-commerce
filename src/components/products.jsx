@@ -9,35 +9,99 @@ import ListItem from "@mui/material/ListItem";
 import Divider from "@mui/material/Divider";
 import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
+import Pagination from "@mui/material/Pagination";
 
 // redux imports
 import { useSelector } from "react-redux";
-
-// react imports
-import { useState } from "react";
+import { useDispatch } from "react-redux";
+import {
+  changeFilter,
+  changePage,
+  resetPagination,
+} from "../features/apiSlice";
 
 export default function Products() {
-
-  const { value: filteredProducts } = useSelector((state) => state.api);
-
-  const [ filter, setFilter ] = useState({
-    category: [],
-    priceRange: { min: 0, max: 0 },
-    availability: [],
-    sorting: ""
-  });
+  const filter = useSelector((state) => state.api.filter);
+  const dispatch = useDispatch();
 
   const categories = [
     "groceries",
     "fragrances",
     "smartphones",
     "laptops",
-    "skincare",
+    "skin-care",
     "home-decoration",
   ];
 
   const availability = ["In Stock", "Out of Stock"];
 
+  // Pagination handler
+  const handlePageChange = (event, page) => {
+    dispatch(changePage(page));
+    // Scroll to top when page changes
+    window.scrollTo({ top: 400, behavior: "smooth" });
+  };
+
+  // ------ filtering handlers ------
+  // sorting handler
+  const handleSorting = (e) => {
+    dispatch(
+      changeFilter({
+        ...filter,
+        sorting: e.target.value,
+      })
+    );
+    dispatch(resetPagination());
+  };
+  // category handler
+  const handleCategory = (category) => {
+    let updatedCategories;
+
+    if (filter.category.includes(category)) {
+      // Remove category if it's already selected
+      updatedCategories = filter.category.filter((cat) => cat !== category);
+    } else {
+      // Add category if it's not selected
+      updatedCategories = [...filter.category, category];
+    }
+
+    dispatch(
+      changeFilter({
+        ...filter,
+        category: updatedCategories,
+      })
+    );
+    dispatch(resetPagination());
+  }; // price range handler
+  const handlePriceRange = (min, max) => {
+    dispatch(
+      changeFilter({
+        ...filter,
+        priceRange: { min, max },
+      })
+    );
+    dispatch(resetPagination());
+  };
+  // availability handler
+  const handleAvailability = (status) => {
+    let updatedAvailability;
+
+    if (filter.availability.includes(status)) {
+      // Remove status if it's already selected
+      updatedAvailability = filter.availability.filter((av) => av !== status);
+    } else {
+      // Add status if it's not selected
+      updatedAvailability = [...filter.availability, status];
+    }
+
+    dispatch(
+      changeFilter({
+        ...filter,
+        availability: updatedAvailability,
+      })
+    );
+    dispatch(resetPagination());
+  };
   return (
     <main className="flex flex-col lg:flex-row gap-10 my-10 mx-12 lg:mx-20">
       {/* drawer category for small screens */}
@@ -54,22 +118,16 @@ export default function Products() {
             {categories.map((text) => (
               <ListItem key={text}>
                 <FormControlLabel
-                  control={<Checkbox />}
+                  control={
+                    <Checkbox
+                      checked={filter.category.includes(text)} // Show checked state
+                      onChange={() => {
+                        handleCategory(text);
+                      }}
+                    />
+                  }
                   label={text}
                   className="capitalize"
-                  onChange={(e) => {
-                    if (e.target.checked) {
-                      setFilter((prev) => ({
-                        ...prev,
-                        category: [...prev.category, text],
-                      }));
-                    } else {
-                      setFilter((prev) => ({
-                        ...prev,
-                        category: prev.category.filter((cat) => cat !== text),
-                      }));
-                    }
-                  }}
                 />
               </ListItem>
             ))}
@@ -86,6 +144,9 @@ export default function Products() {
                 <input
                   type="number"
                   placeholder="0"
+                  onChange={(e) => {
+                    handlePriceRange(e.target.value, filter.priceRange.max);
+                  }}
                   className="w-full bg-gray-200 border border-black p-2"
                 />
               </div>
@@ -95,6 +156,9 @@ export default function Products() {
                 <input
                   type="number"
                   placeholder="0"
+                  onChange={(e) => {
+                    handlePriceRange(filter.priceRange.min, e.target.value);
+                  }}
                   className="w-full bg-gray-200 border border-black p-2"
                 />
               </div>
@@ -109,7 +173,12 @@ export default function Products() {
             {availability.map((text) => (
               <ListItem key={text}>
                 <FormControlLabel
-                  control={<Checkbox />}
+                  control={
+                    <Checkbox
+                      checked={filter.availability.includes(text)} // Show checked state
+                      onChange={() => handleAvailability(text)}
+                    />
+                  }
                   label={text}
                   className="capitalize"
                 />
@@ -138,18 +207,34 @@ export default function Products() {
         {/* filter */}
         <div className="hidden sm:flex flex-row items-center justify-between p-4 bg-gray-100">
           {/* add products count */}
-          <p>{filteredProducts.length} products</p>
+          <p>{filter.counter} products</p>
+          {/* products sorting */}
           <div>
             <label className="mr-2">Sort by:</label>
-            <select className="border border-gray-300 p-2 rounded">
-              <option value="priceLowToHigh">Price: Low to High</option>
-              <option value="priceHighToLow">Price: High to Low</option>
+            <select
+              className="border border-gray-300 p-2 rounded"
+              defaultValue={"lowToHigh"}
+              onChange={handleSorting}
+            >
+              <option value="lowToHigh">Price: Low to High</option>
+              <option value="highToLow">Price: High to Low</option>
               <option value="topRated">Top Rated</option>
             </select>
           </div>
         </div>
         {/* Products List */}
         <ProductsList />
+        {/* Pagination */}
+        <Pagination
+          count={Math.ceil(filter.counter / filter.itemsPerPage)}
+          page={filter.currentPage}
+          onChange={handlePageChange}
+          color="primary"
+          className="mx-auto"
+          disabled={filter.counter <= filter.itemsPerPage}
+          showFirstButton
+          showLastButton
+        />
       </section>
     </main>
   );
