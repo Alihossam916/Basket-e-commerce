@@ -27,9 +27,6 @@ export default function Header() {
   // profile menu state
   const [profileAnchorEl, setProfileAnchorEl] = useState(null);
   const profileOpen = Boolean(profileAnchorEl);
-  // category menu state
-  const [categoryAnchorEl, setCategoryAnchorEl] = useState(null);
-  const categoryOpen = Boolean(categoryAnchorEl);
 
   // profile menu handlers
   const handleProfileMenuClick = (event) => {
@@ -43,13 +40,6 @@ export default function Header() {
     // add logout functionality here
     dispatch(logOut());
     setProfileAnchorEl(null);
-  };
-  // category menu handlers
-  const handleCategoryMenuClick = (event) => {
-    setCategoryAnchorEl(event.currentTarget);
-  };
-  const handleCategoryMenuClose = () => {
-    setCategoryAnchorEl(null);
   };
 
   return (
@@ -144,37 +134,6 @@ export default function Header() {
         {/* Navigation Links */}
         <nav className="hidden md:block">
           <ul className="w-full flex flex-row items-center gap-4 text-text-primary py-3 text-lg">
-            <li>
-              <Button
-                className="bg-primary"
-                id="basic-button"
-                aria-controls={open ? "basic-menu" : undefined}
-                aria-haspopup="true"
-                aria-expanded={categoryOpen ? "true" : undefined}
-                onClick={handleCategoryMenuClick}
-              >
-                ALL CATEGORIES
-              </Button>
-              <Menu
-                id="basic-menu"
-                anchorEl={categoryAnchorEl}
-                open={categoryOpen}
-                onClose={handleCategoryMenuClose}
-                slotProps={{
-                  list: {
-                    "aria-labelledby": "basic-button",
-                  },
-                }}
-              >
-                <MenuItem onClick={handleCategoryMenuClose}>Profile</MenuItem>
-                <MenuItem onClick={handleCategoryMenuClose}>
-                  My account
-                </MenuItem>
-                <NavLink to="/" className="hover:text-primary">
-                  <MenuItem onClick={handleCategoryMenuClose}>Logout</MenuItem>
-                </NavLink>
-              </Menu>
-            </li>
             <li>
               <NavLink
                 to="/"

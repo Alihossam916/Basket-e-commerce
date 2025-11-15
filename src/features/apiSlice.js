@@ -26,15 +26,6 @@ export const fetchDataFromApi = createAsyncThunk(
 
 const initialState = {
   value: [],
-  filter: {
-    category: [],
-    priceRange: { min: 0, max: 0 },
-    availability: [],
-    sorting: "lowToHigh",
-    counter: 0,
-    currentPage: 1,
-    itemsPerPage: 12,
-  },
   loading: false,
   error: null,
 };
@@ -42,17 +33,7 @@ const initialState = {
 export const apiSlice = createSlice({
   name: "api",
   initialState,
-  reducers: {
-    changeFilter: (state, action) => {
-      state.filter = action.payload;
-    },
-    changePage: (state, action) => {
-      state.filter.currentPage = action.payload;
-    },
-    resetPagination: (state) => {
-      state.filter.currentPage = 1;
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(fetchDataFromApi.pending, (state) => {

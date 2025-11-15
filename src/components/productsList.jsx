@@ -4,7 +4,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 
 // Redux imports
 import { useSelector, useDispatch } from "react-redux";
-import { changeFilter } from "../features/apiSlice";
+import { changeFilter } from "../features/filterSlice";
 
 // react imports
 import { useEffect } from "react";
@@ -17,7 +17,7 @@ export default function ProductsList() {
     error,
   } = useSelector((state) => state.api);
 
-  const filter = useSelector((state) => state.api.filter);
+  const filter = useSelector((state) => state.filter.filter);
   const {
     category,
     priceRange,
@@ -38,12 +38,20 @@ export default function ProductsList() {
   }
   // Price range filter
   if (
-    priceRange.min >= 0 &&
+    priceRange.min > 0 &&
     priceRange.max > 0 &&
     priceRange.max >= priceRange.min
   ) {
     filteredProducts = filteredProducts.filter((product) => {
       return product.price >= priceRange.min && product.price <= priceRange.max;
+    });
+  }else if (priceRange.min > 0) {
+    filteredProducts = filteredProducts.filter((product) => {
+      return product.price >= priceRange.min;
+    });
+  }else if (priceRange.max > 0) {
+    filteredProducts = filteredProducts.filter((product) => {
+      return product.price <= priceRange.max;
     });
   }
   // Availability filter

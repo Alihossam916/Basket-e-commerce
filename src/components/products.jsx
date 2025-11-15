@@ -12,17 +12,16 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Pagination from "@mui/material/Pagination";
 
 // redux imports
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import {
   changeFilter,
   changePage,
   resetPagination,
-} from "../features/apiSlice";
+} from "../features/filterSlice";
 
 export default function Products() {
-  const filter = useSelector((state) => state.api.filter);
   const dispatch = useDispatch();
+  const filter = useSelector((state) => state.filter.filter);
 
   const categories = [
     "groceries",
@@ -77,7 +76,7 @@ export default function Products() {
     dispatch(
       changeFilter({
         ...filter,
-        priceRange: { min, max },
+        priceRange: { min: parseFloat(min), max: parseFloat(max) },
       })
     );
     dispatch(resetPagination());
@@ -143,7 +142,7 @@ export default function Products() {
                 <label className="text-md mb-2">From</label>
                 <input
                   type="number"
-                  placeholder="0"
+                  value={filter.priceRange.min}
                   onChange={(e) => {
                     handlePriceRange(e.target.value, filter.priceRange.max);
                   }}
@@ -155,7 +154,7 @@ export default function Products() {
                 <label className="text-md mb-2">To</label>
                 <input
                   type="number"
-                  placeholder="0"
+                  value={filter.priceRange.max}
                   onChange={(e) => {
                     handlePriceRange(filter.priceRange.min, e.target.value);
                   }}
@@ -213,7 +212,7 @@ export default function Products() {
             <label className="mr-2">Sort by:</label>
             <select
               className="border border-gray-300 p-2 rounded"
-              defaultValue={"lowToHigh"}
+              defaultValue={filter.sorting}
               onChange={handleSorting}
             >
               <option value="lowToHigh">Price: Low to High</option>
@@ -226,6 +225,7 @@ export default function Products() {
         <ProductsList />
         {/* Pagination */}
         <Pagination
+        // return the total number of pages
           count={Math.ceil(filter.counter / filter.itemsPerPage)}
           page={filter.currentPage}
           onChange={handlePageChange}

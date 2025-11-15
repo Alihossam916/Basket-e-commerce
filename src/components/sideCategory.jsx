@@ -13,19 +13,19 @@ import CloseIcon from "@mui/icons-material/Close";
 // react imports
 import { useState } from "react";
 
+// redux imports
+import { useDispatch, useSelector } from "react-redux";
+import { changeFilter, resetPagination } from "../features/filterSlice";
+
 export default function TemporaryDrawer() {
   const [open, setOpen] = useState(false);
+
+  const dispatch = useDispatch();
+  const filter = useSelector((state) => state.filter.filter);
 
   const toggleDrawer = (newOpen) => () => {
     setOpen(newOpen);
   };
-
-  const [ filter, setFilter ] = useState({
-    category: [],
-    priceRange: { min: 0, max: 0 },
-    availability: [],
-    sorting: ""
-  });
 
   const categories = [
     "groceries",
@@ -37,6 +37,68 @@ export default function TemporaryDrawer() {
   ];
 
   const availability = ["In Stock", "Out of Stock"];
+
+  // ------ filtering handlers ------
+  // sorting handler
+  const handleSorting = (e) => {
+    dispatch(
+      changeFilter({
+        ...filter,
+        sorting: e.target.value,
+      })
+    );
+    dispatch(resetPagination());
+  };
+  // category handler
+  const handleCategory = (category) => {
+    let updatedCategories;
+
+    if (filter.category.includes(category)) {
+      // Remove category if it's already selected
+      updatedCategories = filter.category.filter((cat) => cat !== category);
+    } else {
+      // Add category if it's not selected
+      updatedCategories = [...filter.category, category];
+    }
+
+    dispatch(
+      changeFilter({
+        ...filter,
+        category: updatedCategories,
+      })
+    );
+    dispatch(resetPagination());
+  };
+  // price range handler
+  const handlePriceRange = (min, max) => {
+    dispatch(
+      changeFilter({
+        ...filter,
+        priceRange: { min: parseFloat(min), max: parseFloat(max) },
+      })
+    );
+    dispatch(resetPagination());
+  };
+  // availability handler
+  const handleAvailability = (status) => {
+    let updatedAvailability;
+
+    if (filter.availability.includes(status)) {
+      // Remove status if it's already selected
+      updatedAvailability = filter.availability.filter((av) => av !== status);
+    } else {
+      // Add status if it's not selected
+      updatedAvailability = [...filter.availability, status];
+    }
+
+    dispatch(
+      changeFilter({
+        ...filter,
+        availability: updatedAvailability,
+      })
+    );
+    dispatch(resetPagination());
+  };
 
   const DrawerList = (
     <Box role="presentation">
@@ -55,7 +117,14 @@ export default function TemporaryDrawer() {
         {categories.map((text) => (
           <ListItem key={text}>
             <FormControlLabel
-              control={<Checkbox />}
+              control={
+                <Checkbox
+                  checked={filter.category.includes(text)} // Show checked state
+                  onChange={() => {
+                    handleCategory(text);
+                  }}
+                />
+              }
               label={text}
               className="capitalize"
             />
@@ -71,7 +140,10 @@ export default function TemporaryDrawer() {
             <label className="text-md mb-2">From</label>
             <input
               type="number"
-              placeholder="0"
+              value={filter.priceRange.min}
+              onChange={(e) => {
+                handlePriceRange(e.target.value, filter.priceRange.max);
+              }}
               className="w-full bg-gray-200 border border-black p-2"
             />
           </div>
@@ -80,7 +152,10 @@ export default function TemporaryDrawer() {
             <label className="text-md mb-2">To</label>
             <input
               type="number"
-              placeholder="0"
+              value={filter.priceRange.max}
+              onChange={(e) => {
+                handlePriceRange(filter.priceRange.min, e.target.value);
+              }}
               className="w-full bg-gray-200 border border-black p-2"
             />
           </div>
@@ -93,7 +168,12 @@ export default function TemporaryDrawer() {
         {availability.map((text) => (
           <ListItem key={text}>
             <FormControlLabel
-              control={<Checkbox />}
+              control={
+                <Checkbox
+                  checked={filter.availability.includes(text)} // Show checked state
+                  onChange={() => handleAvailability(text)}
+                />
+              }
               label={text}
               className="capitalize"
             />
@@ -103,14 +183,18 @@ export default function TemporaryDrawer() {
       <Divider />
       <List>
         {/* filter */}
-          <div className="ml-3 p-2">
-            <label className="mr-2">Sort by:</label>
-            <select className="border border-gray-300 p-2 rounded">
-              <option value="priceLowToHigh">Price: Low to High</option>
-              <option value="priceHighToLow">Price: High to Low</option>
-              <option value="topRated">Top Rated</option>
-            </select>
-          </div>
+        <div className="ml-3 p-2">
+          <label className="mr-2">Sort by:</label>
+          <select
+            className="border border-gray-300 p-2 rounded"
+            defaultValue={filter.sorting}
+            onChange={handleSorting}
+          >
+            <option value="priceLowToHigh">Price: Low to High</option>
+            <option value="priceHighToLow">Price: High to Low</option>
+            <option value="topRated">Top Rated</option>
+          </select>
+        </div>
       </List>
       <img
         src="/imgs/starbucks happy hour.png"
