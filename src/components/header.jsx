@@ -24,6 +24,12 @@ export default function Header() {
   // login state from redux
   const { currentUser } = useSelector((state) => state.user);
   const dispatch = useDispatch();
+  // cart state from redux
+  const cartItems = useSelector((state) => state.cart.items);
+  const itemsCount = Object.values(cartItems).reduce(
+    (total, item) => total + item.quantity,
+    0
+  );
   // profile menu state
   const [profileAnchorEl, setProfileAnchorEl] = useState(null);
   const profileOpen = Boolean(profileAnchorEl);
@@ -96,15 +102,15 @@ export default function Header() {
             >
               {currentUser ? (
                 <div>
-                <MenuItem>
-                  <NavLink to="/profile">Profile</NavLink>
-                </MenuItem>
-                <MenuItem>
-                  <NavLink to="/wishlist">Wishlist</NavLink>
-                </MenuItem>
-                <MenuItem onClick={handleLogout}>
-                  <NavLink to="/">Logout</NavLink>
-                </MenuItem>
+                  <MenuItem>
+                    <NavLink to="/profile">Profile</NavLink>
+                  </MenuItem>
+                  <MenuItem>
+                    <NavLink to="/wishlist">Wishlist</NavLink>
+                  </MenuItem>
+                  <MenuItem onClick={handleLogout}>
+                    <NavLink to="/">Logout</NavLink>
+                  </MenuItem>
                 </div>
               ) : (
                 <div>
@@ -122,7 +128,7 @@ export default function Header() {
               <Link to="/cart">
                 <button className="relative bg-[#FFF1EE] text-price-sale p-2 rounded-4xl cursor-pointer">
                   <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold px-1 rounded-full">
-                    1
+                    {itemsCount}
                   </span>
                   <ShoppingBasketOutlinedIcon />
                 </button>
