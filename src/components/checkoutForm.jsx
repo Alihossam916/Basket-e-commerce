@@ -5,20 +5,39 @@ import Checkbox from "@mui/material/Checkbox";
 
 import { useState } from "react";
 
-export default function CheckoutForm() {
+export default function CheckoutForm({ setShippingFee }) {
   const [checkoutFormData, setCheckoutFormData] = useState({
     fName: "",
     lName: "",
     contactInfo: "",
-    address: "",
+    address: {
+      street: "",
+      apartment: "",
+      postalCode: "",
+      city: "",
+    },
+    shippingMethod: "0",
+    paymentMethod: "credit-card",
   });
 
   const handleChange = (e) => {
     setCheckoutFormData({
       ...checkoutFormData,
       [e.target.name]: e.target.value,
+      
     });
   };
+
+  const handleAddressChange = (e) => {
+  const { name, value } = e.target;
+  setCheckoutFormData({
+    ...checkoutFormData,
+    address: {
+      ...checkoutFormData.address,
+      [name]: value
+    }
+  });
+};
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -39,7 +58,8 @@ export default function CheckoutForm() {
           label="Email or mobile phone number"
           variant="outlined"
           color="primary"
-          value={checkoutFormData.name}
+          name="contactInfo"
+          value={checkoutFormData.contactInfo}
           onChange={handleChange}
         />
         <FormControlLabel
@@ -56,6 +76,9 @@ export default function CheckoutForm() {
             label="First Name"
             variant="outlined"
             color="primary"
+            name="fName"
+            value={checkoutFormData.fName}
+            onChange={handleChange}
             className="w-full"
           />
           <TextField
@@ -63,6 +86,9 @@ export default function CheckoutForm() {
             label="Last Name"
             variant="outlined"
             color="primary"
+            name="lName"
+            value={checkoutFormData.lName}
+            onChange={handleChange}
             className="w-full"
           />
         </div>
@@ -71,6 +97,9 @@ export default function CheckoutForm() {
           label="Address"
           variant="outlined"
           color="primary"
+          name="street"
+          value={checkoutFormData.address.street}
+          onChange={handleAddressChange}
           className="w-full"
         />
         <TextField
@@ -78,6 +107,9 @@ export default function CheckoutForm() {
           label="Apartment, suite, etc. (optional)"
           variant="outlined"
           color="primary"
+          name="apartment"
+          value={checkoutFormData.address.apartment}
+          onChange={handleAddressChange}
           className="w-full"
         />
         <div className="flex gap-4">
@@ -86,6 +118,9 @@ export default function CheckoutForm() {
             label="Postal Code (Optional)"
             variant="outlined"
             color="primary"
+            name="postalCode"
+            value={checkoutFormData.address.postalCode}
+            onChange={handleAddressChange}
             className="w-full"
           />
           <TextField
@@ -93,6 +128,9 @@ export default function CheckoutForm() {
             label="City"
             variant="outlined"
             color="primary"
+            name="city"
+            value={checkoutFormData.address.city}
+            onChange={handleAddressChange}
             className="w-full"
           />
         </div>
@@ -104,15 +142,28 @@ export default function CheckoutForm() {
       {/* Shipping Method */}
       <div className="flex flex-col gap-4 mb-6">
         <h3 className="text-xl font-semibold">Shipping Method</h3>
-        <select className="border border-gray-300 p-4 rounded">
-          <option value="standard">Standard Shipping - Free</option>
-          <option value="express">Express Shipping - $5.99</option>
+        <select
+          className="border border-gray-300 p-4 rounded"
+          onChange={(e) => {
+            setShippingFee(e.target.value);
+            handleChange(e);
+          }}
+          name="shippingMethod"
+          value={checkoutFormData.shippingMethod}
+        >
+          <option value="0">Standard Shipping - Free</option>
+          <option value="5.99">Express Shipping - $5.99</option>
         </select>
       </div>
       {/* Payment Method */}
       <div className="flex flex-col gap-4 mb-6">
         <h3 className="text-xl font-semibold">Payment Method</h3>
-        <select className="border border-gray-300 p-4 rounded">
+        <select
+          className="border border-gray-300 p-4 rounded"
+          onChange={handleChange}
+          name="paymentMethod"
+          value={checkoutFormData.paymentMethod}
+        >
           <option value="credit-card">Credit Card</option>
           <option value="paypal">PayPal</option>
         </select>

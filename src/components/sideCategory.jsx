@@ -32,7 +32,7 @@ export default function TemporaryDrawer() {
     "fragrances",
     "smartphones",
     "laptops",
-    "skincare",
+    "skin-care",
     "home-decoration",
   ];
 

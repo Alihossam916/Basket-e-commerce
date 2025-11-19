@@ -165,8 +165,7 @@ export default function ProductsList() {
               >
                 $
                 {(
-                  product.price -
-                  (product.price * product.discountPercentage.toFixed(0)) / 100
+                  product.price * (1 - product.discountPercentage.toFixed(0) / 100)
                 ).toFixed(2)}
               </p>
             </div>
@@ -185,7 +184,7 @@ export default function ProductsList() {
                 className="bg-amber-400 hover:bg-amber-600 transition-colors duration-300 p-1 rounded-r-xl w-full cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                 type="button"
                 value="+"
-                disabled={getProductQuantity(product.id) === 99}
+                disabled={getProductQuantity(product.id) === 99 || product.stock === 0}
                 onClick={() => handleAddToCart(product)}
               />
             </div>

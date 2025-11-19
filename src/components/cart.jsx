@@ -38,32 +38,51 @@ export default function Cart() {
           {/* each item in the cart */}
           {Object.entries(cartItems).map(([productId, item]) => {
             return (
+              // modify the cart item containers to align items properly
               <div
                 key={productId}
-                className="flex flex-col sm:flex-row justify-between md:justify-around items-center gap-4 sm:gap-0 w-full"
+                className="w-full grid grid-cols-1 sm:grid-cols-4 place-items-center border-b border-gray-400 sm:border-none p-4 gap-4 sm:gap-2"
               >
-                <div className="flex justify-center items-center gap-4">
+                <div className="flex justify-start items-center gap-4">
                   <img src={item.thumbnail} alt="item image" className="w-20" />
-                  <p className="text-center">{item.name}</p>
+                  <p className="text-center overflow-ellipsis">{item.title}</p>
                 </div>
                 {/* item counter */}
                 <div className="flex items-center gap-4">
-                  <button onClick={() => handleRemoveFromCart(item)} className="flex justify-center items-center border border-gray-300 p-2 w-10 h-10 rounded-full hover:bg-gray-300 transition-colors duration-200 cursor-pointer">
+                  <button
+                    disabled={item.quantity <= 1}
+                    onClick={() => handleRemoveFromCart(item)}
+                    className="flex justify-center items-center border border-gray-300 p-2 w-10 h-10 rounded-full hover:bg-gray-300 transition-colors duration-200 cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
+                  >
                     -
                   </button>
                   <span className="p-2">{item.quantity}</span>
-                  <button onClick={() => handleAddToCart(item)} className="flex justify-center items-center border border-gray-300 p-2 w-10 h-10 rounded-full hover:bg-gray-300 transition-colors duration-200 cursor-pointer">
+                  <button
+                    onClick={() => handleAddToCart(item)}
+                    className="flex justify-center items-center border border-gray-300 p-2 w-10 h-10 rounded-full hover:bg-gray-300 transition-colors duration-200 cursor-pointer"
+                  >
                     +
                   </button>
                 </div>
-                <p className="text-center">${item.price.toFixed(2)}</p>
-                <button onClick={() => handleClearItem(item)} className="border border-red-500 text-red-500 p-2 rounded hover:bg-red-500 hover:text-white transition-colors duration-200 cursor-pointer">
+                {/* add the offer of each item when applicable */}
+                <p className="text-center">
+                  $
+                  {(
+                    item.price *
+                    (1 - item.discountPercentage.toFixed(0) / 100) *
+                    item.quantity
+                  ).toFixed(2)}
+                </p>
+                <button
+                  onClick={() => handleClearItem(item)}
+                  className="border border-red-500 text-red-500 p-2 rounded hover:bg-red-500 hover:text-white transition-colors duration-200 cursor-pointer"
+                >
                   Remove
                 </button>
               </div>
             );
           })}
-          <hr className="w-full border-t border-gray-300 my-4" />
+          <hr className="invisible sm:visible sm:block w-full border-t border-gray-300 my-4" />
           <div className="w-full flex flex-row flex-wrap justify-center sm:justify-between items-center gap-4 sm:gap-0">
             <div className="flex flex-row justify-center items-center gap-4">
               <Link to={isLoggedIn ? "/checkout" : "/login"}>
