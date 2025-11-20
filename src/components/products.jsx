@@ -71,7 +71,8 @@ export default function Products() {
       })
     );
     dispatch(resetPagination());
-  }; // price range handler
+  }; 
+  // price range handler
   const handlePriceRange = (min, max) => {
     dispatch(
       changeFilter({
