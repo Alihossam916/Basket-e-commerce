@@ -13,7 +13,7 @@ export const userSlice = createSlice({
     logIn: (state, action) => {
       const user = state.users.find(
         (u) =>
-          u.userName === action.payload.userName &&
+          u.username === action.payload.username &&
           u.password === action.payload.password
       );
       if (user) {
@@ -27,7 +27,7 @@ export const userSlice = createSlice({
     },
     register: (state, action) => {
       const existingUser = state.users.find(
-        (user) => user.email === action.payload.email
+        (user) => user.email === action.payload.email || user.username === action.payload.username
       );
       if (!existingUser) {
         state.users.push(action.payload);
@@ -37,7 +37,7 @@ export const userSlice = createSlice({
         alert("Registration successful!");
         state.isLoggedIn = true;
       } else {
-        alert("User with this email already exists.");
+        alert("This username or email already exists.");
       }
     },
     logOut: (state) => {

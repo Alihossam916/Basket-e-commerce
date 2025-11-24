@@ -24,20 +24,19 @@ export default function CheckoutForm({ setShippingFee }) {
     setCheckoutFormData({
       ...checkoutFormData,
       [e.target.name]: e.target.value,
-      
     });
   };
 
   const handleAddressChange = (e) => {
-  const { name, value } = e.target;
-  setCheckoutFormData({
-    ...checkoutFormData,
-    address: {
-      ...checkoutFormData.address,
-      [name]: value
-    }
-  });
-};
+    const { name, value } = e.target;
+    setCheckoutFormData({
+      ...checkoutFormData,
+      address: {
+        ...checkoutFormData.address,
+        [name]: value,
+      },
+    });
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -61,6 +60,7 @@ export default function CheckoutForm({ setShippingFee }) {
           name="contactInfo"
           value={checkoutFormData.contactInfo}
           onChange={handleChange}
+          required
         />
         <FormControlLabel
           control={<Checkbox />}
@@ -80,6 +80,7 @@ export default function CheckoutForm({ setShippingFee }) {
             value={checkoutFormData.fName}
             onChange={handleChange}
             className="w-full"
+            required
           />
           <TextField
             id="outlined-basic"
@@ -90,6 +91,7 @@ export default function CheckoutForm({ setShippingFee }) {
             value={checkoutFormData.lName}
             onChange={handleChange}
             className="w-full"
+            required
           />
         </div>
         <TextField
@@ -101,6 +103,7 @@ export default function CheckoutForm({ setShippingFee }) {
           value={checkoutFormData.address.street}
           onChange={handleAddressChange}
           className="w-full"
+          required
         />
         <TextField
           id="outlined-basic"
@@ -132,6 +135,7 @@ export default function CheckoutForm({ setShippingFee }) {
             value={checkoutFormData.address.city}
             onChange={handleAddressChange}
             className="w-full"
+            required
           />
         </div>
         <FormControlLabel

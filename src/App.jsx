@@ -9,6 +9,7 @@ import About from "./components/about";
 import Cart from "./components/cart";
 import Checkout from "./components/checkout";
 import Products from "./components/products";
+import Profile from "./components/profile";
 
 // react imports
 import { useEffect } from "react";
@@ -50,6 +51,7 @@ function App() {
         <Route path="/signup" element={<SignupForm />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/checkout" element={<Checkout />} />
+        <Route path="/profile" element={<Profile />} />
       </Routes>
 
       <Footer />

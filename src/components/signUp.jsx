@@ -12,9 +12,13 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { register } from "../features/userSlice";
 
+// uuid import 
+import { v4 as uuidv4 } from "uuid";
+
 export default function SignUpForm() {
   const [signUpData, setSignUpData] = useState({
-    userName: "",
+    id: uuidv4(),
+    username: "",
     email: "",
     password: "",
   });
@@ -50,11 +54,11 @@ export default function SignUpForm() {
       <div className="flex flex-col items-center gap-10">
         <h2 className="text-2xl font-semibold">Sign Up</h2>
         <TextField
-          name="userName"
+          name="username"
           label="Username"
           variant="outlined"
           fullWidth
-          value={signUpData.userName}
+          value={signUpData.username}
           onChange={handleChange}
           required
         />

@@ -14,7 +14,7 @@ import { logIn } from "../features/userSlice";
 
 export default function LoginForm() {
   const [formData, setFormData] = useState({
-    userName: "",
+    username: "",
     password: "",
   });
   const navigate = useNavigate();
@@ -48,11 +48,11 @@ export default function LoginForm() {
       <div className="flex flex-col items-center gap-10">
         <h2 className="text-2xl font-semibold">Login</h2>
         <TextField
-          name="userName"
+          name="username"
           label="Username"
           variant="outlined"
           fullWidth
-          value={formData.userName}
+          value={formData.username}
           onChange={handleChange}
           required
         />
