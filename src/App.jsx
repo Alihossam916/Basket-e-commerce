@@ -10,6 +10,7 @@ import Cart from "./components/cart";
 import Checkout from "./components/checkout";
 import Products from "./components/products";
 import Profile from "./components/profile";
+import Wishlist from "./components/wishlist";
 
 // react imports
 import { useEffect } from "react";
@@ -52,6 +53,7 @@ function App() {
         <Route path="/cart" element={<Cart />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/wishlist" element={<Wishlist />} />
       </Routes>
 
       <Footer />

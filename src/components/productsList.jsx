@@ -1,11 +1,15 @@
 // MUI components
 import Rating from "@mui/material/Rating";
 import CircularProgress from "@mui/material/CircularProgress";
+import Checkbox from "@mui/material/Checkbox";
+import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
+import Favorite from "@mui/icons-material/Favorite";
 
 // Redux imports
 import { useSelector, useDispatch } from "react-redux";
 import { changeFilter } from "../features/filterSlice";
 import { addItem, removeItem } from "../features/cartSlice";
+import { addToList, removeFromList } from "../features/wishlistSlice";
 
 // react imports
 import { useEffect } from "react";
@@ -20,6 +24,7 @@ export default function ProductsList() {
 
   const filter = useSelector((state) => state.filter.filter);
   const cartItems = useSelector((state) => state.cart.items); //get cart items
+  const wishlistItems = useSelector((state) => state.wishlist.items);
 
   const {
     category,
@@ -165,7 +170,8 @@ export default function ProductsList() {
               >
                 $
                 {(
-                  product.price * (1 - product.discountPercentage.toFixed(0) / 100)
+                  product.price *
+                  (1 - product.discountPercentage.toFixed(0) / 100)
                 ).toFixed(2)}
               </p>
             </div>
@@ -184,7 +190,9 @@ export default function ProductsList() {
                 className="bg-amber-400 hover:bg-amber-600 transition-colors duration-300 p-1 rounded-r-xl w-full cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                 type="button"
                 value="+"
-                disabled={getProductQuantity(product.id) === 99 || product.stock === 0}
+                disabled={
+                  getProductQuantity(product.id) === 99 || product.stock === 0
+                }
                 onClick={() => handleAddToCart(product)}
               />
             </div>
@@ -196,6 +204,20 @@ export default function ProductsList() {
             >
               {product.discountPercentage.toFixed(0)}%
             </p>
+            <Checkbox
+              className="absolute! top-1 right-2"
+              color="secondary"
+              icon={<FavoriteBorder />}
+              checkedIcon={<Favorite />}
+              checked={wishlistItems[product.id] ? true : false}
+              onChange={(e) => {
+                if (e.target.checked) {
+                  dispatch(addToList(product));
+                } else {
+                  dispatch(removeFromList(product));
+                }
+              }}
+            />
           </div>
         );
       })}

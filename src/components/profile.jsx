@@ -33,6 +33,7 @@ export default function Profile() {
       [e.target.id]: e.target.value,
     });
   };
+  // save updated user data handler (try to move this function to userSlice later)
   const handleSave = () => {
     const existingUser = users.find(
       (user) =>
@@ -40,7 +41,7 @@ export default function Profile() {
           user.username === userData.username) &&
         user.id !== currentUser.id
     );
-    
+
     if (userData.username === "" || userData.email === "") {
       alert("Username and email cannot be empty.");
     } else if (existingUser) {

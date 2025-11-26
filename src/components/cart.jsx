@@ -15,7 +15,7 @@ export default function Cart() {
   const hasItems = Object.keys(cartItems).length > 0;
 
   const totalPrice = Object.values(cartItems).reduce((total, item) => {
-    return total + item.price * item.quantity;
+    return total + item.price * (1 - item.discountPercentage.toFixed(0) / 100).toFixed(2) * item.quantity;
   }, 0);
 
   // cart handlers
@@ -30,7 +30,7 @@ export default function Cart() {
   };
 
   return (
-    <main className="cartItems-container flex flex-col justify-center items-center gap-6 my-10 mx-10 md:mx-20 lg:mx-50">
+    <main className="cartItems-container flex flex-col justify-center items-center gap-6 my-10 mx-10 lg:mx-50">
       {!hasItems ? (
         <h1 className="text-4xl text-center my-40">Cart Is Empty</h1>
       ) : (
@@ -38,10 +38,9 @@ export default function Cart() {
           {/* each item in the cart */}
           {Object.entries(cartItems).map(([productId, item]) => {
             return (
-              // modify the cart item containers to align items properly
               <div
                 key={productId}
-                className="w-full grid grid-cols-1 sm:grid-cols-4 place-items-center border-b border-gray-400 sm:border-none p-4 gap-4 sm:gap-2"
+                className="w-full grid grid-cols-1 md:grid-cols-4 place-items-center border-b border-gray-400 md:border-none p-4 gap-4 md:gap-2"
               >
                 <div className="flex justify-start items-center gap-4">
                   <img src={item.thumbnail} alt="item image" className="w-20" />
@@ -82,7 +81,7 @@ export default function Cart() {
               </div>
             );
           })}
-          <hr className="invisible sm:visible sm:block w-full border-t border-gray-300 my-4" />
+          <hr className="invisible md:visible md:block w-full border-t border-gray-300 my-4" />
           <div className="w-full flex flex-row flex-wrap justify-center sm:justify-between items-center gap-4 sm:gap-0">
             <div className="flex flex-row justify-center items-center gap-4">
               <Link to={isLoggedIn ? "/checkout" : "/login"}>

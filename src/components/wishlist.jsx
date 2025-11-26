@@ -1,30 +1,31 @@
-// import MUI components
+// redux imports
+import { useSelector, useDispatch } from "react-redux";
+import { removeFromList, clearList } from "../features/wishlistSlice";
+
+// mui imports
 import Rating from "@mui/material/Rating";
 import Checkbox from "@mui/material/Checkbox";
 import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
 import Favorite from "@mui/icons-material/Favorite";
+import Button from "@mui/material/Button";
 
-// redux imports
-import { useSelector, useDispatch } from "react-redux";
-import { addToList, removeFromList } from "../features/wishlistSlice";
-
-export default function BestSeller() {
-  const items = useSelector((state) => state.api.value);
+export default function Wishlist() {
+  const dispatch = useDispatch();
   const wishlistItems = useSelector((state) => state.wishlist.items);
 
-  const dispatch = useDispatch();
-  
-  const topRatedItems = items
-    .filter((item) => item.rating > 4)
-    .sort((a, b) => b.rating - a.rating)
-    .slice(0, 8);
-
   return (
-    <section className="flex flex-col items-center w-full gap-4 my-10">
-      <h2 className="font-bold text-2xl self-start">Best Sellers</h2>
-      <div className="grid grid-cols-[repeat(auto-fit,minmax(230px,1fr))] gap-4 w-full p-4">
-        {topRatedItems.map((product) => {
-          return (
+    <main className="flex flex-col gap-4 my-10 mx-10 lg:mx-40">
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-3xl font-bold">Wishlist</h1>
+        <Button variant="contained" disabled={Object.values(wishlistItems).length === 0} className="text-white! py-2!" onClick={() => dispatch(clearList())}>Clear Wishlist</Button>
+      </div>
+      {Object.values(wishlistItems).length <= 0 ? (
+        <p className="mx-auto text-2xl font-semibold mt-10 mb-20">
+          Your wishlist is currently empty.
+        </p>
+      ) : (
+        <div className="grid grid-cols-[repeat(auto-fit,minmax(230px,1fr))] gap-4 w-full p-4">
+          {Object.values(wishlistItems).map((product) => (
             <button
               key={product.id}
               className="relative flex flex-col justify-self-center gap-2 w-[250px] p-4 border rounded items-start text-center cursor-pointer hover:scale-90 transition-all duration-300"
@@ -68,19 +69,15 @@ export default function BestSeller() {
                 color="secondary"
                 icon={<FavoriteBorder />}
                 checkedIcon={<Favorite />}
-                checked={wishlistItems[product.id] ? true : false}
-                onChange={(e) => {
-                  if (e.target.checked) {
-                    dispatch(addToList(product));
-                  } else {
-                    dispatch(removeFromList(product));
-                  }
+                checked={true}
+                onChange={() => {
+                  dispatch(removeFromList(product));
                 }}
               />
             </button>
-          );
-        })}
-      </div>
-    </section>
+          ))}
+        </div>
+      )}
+    </main>
   );
 }

@@ -113,10 +113,10 @@ export default function Header() {
             >
               {currentUser ? (
                 <div>
-                  <MenuItem>
+                  <MenuItem onClick={handleProfileMenuClose}>
                     <NavLink to="/profile">Profile</NavLink>
                   </MenuItem>
-                  <MenuItem>
+                  <MenuItem onClick={handleProfileMenuClose}>
                     <NavLink to="/wishlist">Wishlist</NavLink>
                   </MenuItem>
                   <MenuItem onClick={handleLogout}>
