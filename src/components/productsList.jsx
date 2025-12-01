@@ -12,7 +12,7 @@ import { addItem, removeItem } from "../features/cartSlice";
 import { addToList, removeFromList } from "../features/wishlistSlice";
 
 // react imports
-import { useEffect } from "react";
+import { useEffect, useMemo, useCallback } from "react";
 
 export default function ProductsList() {
   const dispatch = useDispatch();
@@ -36,70 +36,62 @@ export default function ProductsList() {
   } = filter;
 
   // Apply filters
-  let filteredProducts = selectedProducts;
+  const filteredProducts = useMemo(() => {
+    if (!selectedProducts || selectedProducts.length === 0) return [];
+    
+    let filtered = selectedProducts;
 
-  // Category filter
-  if (category.length > 0) {
-    filteredProducts = filteredProducts.filter((product) =>
-      category.includes(product.category)
-    );
-  }
-  // Price range filter
-  if (
-    priceRange.min > 0 &&
-    priceRange.max > 0 &&
-    priceRange.max >= priceRange.min
-  ) {
-    filteredProducts = filteredProducts.filter((product) => {
-      return product.price >= priceRange.min && product.price <= priceRange.max;
-    });
-  } else if (priceRange.min > 0) {
-    filteredProducts = filteredProducts.filter((product) => {
-      return product.price >= priceRange.min;
-    });
-  } else if (priceRange.max > 0) {
-    filteredProducts = filteredProducts.filter((product) => {
-      return product.price <= priceRange.max;
-    });
-  }
-  // Availability filter
-  if (availability.length > 0) {
-    filteredProducts = filteredProducts.filter((product) => {
-      const status = product.stock > 0 ? "In Stock" : "Out of Stock";
-      return availability.includes(status);
-    });
-  }
-  // Sorting
-  switch (sorting) {
-    case "lowToHigh":
-      filteredProducts = filteredProducts
-        .slice()
-        .sort((a, b) => a.price - b.price);
-      break;
-    case "highToLow":
-      filteredProducts = filteredProducts
-        .slice()
-        .sort((a, b) => b.price - a.price);
-      break;
-    case "topRated":
-      filteredProducts = filteredProducts
-        .slice()
-        .sort((a, b) => b.rating - a.rating);
-      break;
-  }
+    // Category filter
+    if (category.length > 0) {
+      filtered = filtered.filter((product) =>
+        category.includes(product.category)
+      );
+    }
+
+    // Price range filter - Optimized logic
+    if (priceRange.min > 0 || priceRange.max > 0) {
+      filtered = filtered.filter((product) => {
+        const price = product.price;
+        const minCheck = priceRange.min > 0 ? price >= priceRange.min : true;
+        const maxCheck = priceRange.max > 0 ? price <= priceRange.max : true;
+        return minCheck && maxCheck;
+      });
+    }
+
+    // Availability filter
+    if (availability.length > 0) {
+      filtered = filtered.filter((product) => {
+        const status = product.stock > 0 ? "In Stock" : "Out of Stock";
+        return availability.includes(status);
+      });
+    }
+
+    // Sorting - Create new array only once
+    switch (sorting) {
+      case "lowToHigh":
+        return [...filtered].sort((a, b) => a.price - b.price);
+      case "highToLow":
+        return [...filtered].sort((a, b) => b.price - a.price);
+      case "topRated":
+        return [...filtered].sort((a, b) => b.rating - a.rating);
+      default:
+        return filtered;
+    }
+  }, [selectedProducts, category, priceRange, availability, sorting]);
 
   // cart handlers
-  const handleAddToCart = (product) => {
+  const handleAddToCart = useCallback((product) => {
     dispatch(addItem(product));
-  };
-  const handleRemoveFromCart = (product) => {
+  }, [dispatch]);
+
+  const handleRemoveFromCart = useCallback((product) => {
     dispatch(removeItem(product));
-  };
+  }, [dispatch]);
 
   // Get quantity for a specific product
-  const getProductQuantity = (productId) => {
+  const getProductQuantity = useCallback((productId) => {
     return cartItems[productId]?.quantity || 0;
-  };
+  }, [cartItems]);
 
   // Apply pagination
   const startIndex = (currentPage - 1) * itemsPerPage;
