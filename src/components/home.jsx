@@ -13,7 +13,7 @@ export default function Home() {
   return (
     <main className="my-10 mx-10 lg:mx-40">
       <div className="w-full flex flex-col md:flex-row gap-5 md:gap-10 justify-center items-center">
-        <div className="w-full flex flex-col justify-center items-start gap-3 bg-[url('/imgs/image_2025-10-24_152603136(1).png')] bg-cover bg-center bg-no-repeat p-10 rounded">
+        <div className="w-full flex flex-col justify-center items-start gap-3 bg-[url('/imgs/image_2025-10-24_152603136-1.png')] bg-cover bg-center bg-no-repeat p-10 rounded">
           <h3>
             Exclusive Offer
             <span className="text-[#038E42] bg-[#00B85333] ms-4">-20% OFF</span>

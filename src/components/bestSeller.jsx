@@ -29,7 +29,7 @@ export default function BestSeller() {
               key={product.id}
               className="relative flex flex-col justify-self-center gap-2 w-[250px] p-4 border rounded items-start text-center cursor-pointer hover:scale-90 transition-all duration-300"
             >
-              <img src={product.thumbnail} alt={product.title} />
+              <img src={product.thumbnail} alt={product.title} loading="lazy" decoding="async"/>
               <h3 className="font-bold text-md text-left">{product.title}</h3>
               <p className="text-md font-semibold text-stock-available">
                 {product.stock > 0 ? "IN STOCK" : "OUT OF STOCK"}
