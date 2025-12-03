@@ -44,17 +44,21 @@ export default function BestSeller() {
         <div className="grid grid-cols-[repeat(auto-fit,minmax(230px,1fr))] gap-4 w-full p-4">
           {topRatedItems.map((product) => {
             return (
-              <button
+              <div
                 key={product.id}
-                onClick={() => openProductDetails(product)}
                 className="relative flex flex-col justify-self-center gap-2 w-[250px] p-4 border rounded items-start text-center cursor-pointer hover:scale-90 transition-all duration-300"
               >
-                <img
-                  src={product.thumbnail}
-                  alt={product.title}
-                  loading="lazy"
-                  decoding="async"
-                />
+                <button
+                  onClick={() => openProductDetails(product)}
+                  className="cursor-pointer"
+                >
+                  <img
+                    src={product.thumbnail}
+                    alt={product.title}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </button>
                 <h3 className="font-bold text-md text-left">{product.title}</h3>
                 <p className="text-md font-semibold text-stock-available">
                   {product.stock > 0 ? "IN STOCK" : "OUT OF STOCK"}
@@ -104,7 +108,7 @@ export default function BestSeller() {
                     }
                   }}
                 />
-              </button>
+              </div>
             );
           })}
         </div>
