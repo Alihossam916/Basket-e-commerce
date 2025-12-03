@@ -1,4 +1,4 @@
-// Components
+// React Components
 import ResponsiveDrawer from "./sideCategory";
 import ProductsList from "./productsList";
 

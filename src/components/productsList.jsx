@@ -12,7 +12,10 @@ import { addItem, removeItem } from "../features/cartSlice";
 import { addToList, removeFromList } from "../features/wishlistSlice";
 
 // react imports
-import { useEffect, useMemo, useCallback } from "react";
+import { useEffect, useMemo, useCallback, useState } from "react";
+
+// react components
+import ProductDetails from "./productDetails";
 
 export default function ProductsList() {
   const dispatch = useDispatch();
@@ -25,6 +28,7 @@ export default function ProductsList() {
   const filter = useSelector((state) => state.filter.filter);
   const cartItems = useSelector((state) => state.cart.items); //get cart items
   const wishlistItems = useSelector((state) => state.wishlist.items);
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
   const {
     category,
@@ -35,10 +39,19 @@ export default function ProductsList() {
     itemsPerPage,
   } = filter;
 
-  // Apply filters
+  // product details handlers
+  const openProductDetails = (product) => {
+    setSelectedProduct(product);
+  };
+
+  const closeProductDetails = () => {
+    setSelectedProduct(null);
+  };
+
+  // filtered products handlers with useMemo for optimization
   const filteredProducts = useMemo(() => {
     if (!selectedProducts || selectedProducts.length === 0) return [];
-    
+
     let filtered = selectedProducts;
 
     // Category filter
@@ -80,18 +93,27 @@ export default function ProductsList() {
   }, [selectedProducts, category, priceRange, availability, sorting]);
 
   // cart handlers
-  const handleAddToCart = useCallback((product) => {
-    dispatch(addItem(product));
-  }, [dispatch]);
+  const handleAddToCart = useCallback(
+    (product) => {
+      dispatch(addItem(product));
+    },
+    [dispatch]
+  );
 
-  const handleRemoveFromCart = useCallback((product) => {
-    dispatch(removeItem(product));
-  }, [dispatch]);
+  const handleRemoveFromCart = useCallback(
+    (product) => {
+      dispatch(removeItem(product));
+    },
+    [dispatch]
+  );
 
   // Get quantity for a specific product
-  const getProductQuantity = useCallback((productId) => {
-    return cartItems[productId]?.quantity || 0;
-  }, [cartItems]);
+  const getProductQuantity = useCallback(
+    (productId) => {
+      return cartItems[productId]?.quantity || 0;
+    },
+    [cartItems]
+  );
 
   // Apply pagination
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -109,110 +131,130 @@ export default function ProductsList() {
   }, [filteredProducts.length]);
 
   return (
-    <section className={"flex flex-wrap justify-center items-center gap-6 p-4"}>
-      {/* show loading until products are fetched */}
-      {loading && <CircularProgress size={"150px"} color="primary" />}
-      {/* show error if there is an error */}
-      {error && (
-        <p className="text-red-500 font-bold text-2xl capitalize">
-          products not found
-        </p>
-      )}
-      {/* map through products here */}
-      {paginatedProducts.map((product, index) => {
-        return (
-          <div
-            id={`product-${index}`}
-            key={product.id}
-            className="relative flex flex-col justify-self-center gap-2 w-[220px] p-4 border border-gray-300 rounded items-start text-center hover:scale-90 transition-all duration-300"
-          >
-            <button className="cursor-pointer">
-              <img src={product.thumbnail} alt={product.title} loading="lazy" decoding="async"/>
-            </button>
-            <h3 className="font-bold text-md text-left">{product.title}</h3>
-            <p className="text-md font-semibold uppercase text-stock-available">
-              {product.stock ? `In stock` : `Out of stock`}
-            </p>
-            <div className="flex flex-row justify-center items-center gap-2">
-              <Rating
-                name="read-only"
-                defaultValue={product.rating}
-                precision={0.5}
-                readOnly
-              />
-              <p>({product.rating})</p>
-            </div>
-            <div className="flex flex-row gap-2">
-              <p
-                className={
-                  "text-gray-400 font-bold text-lg" +
-                  (product.discountPercentage.toFixed(0) != 0
-                    ? " line-through"
-                    : "")
-                }
+    <>
+      <section
+        className={"flex flex-wrap justify-center items-center gap-6 p-4"}
+      >
+        {/* show loading until products are fetched */}
+        {loading && <CircularProgress size={"150px"} color="primary" />}
+        {/* show error if there is an error */}
+        {error && (
+          <p className="text-red-500 font-bold text-2xl capitalize">
+            products not found
+          </p>
+        )}
+        {/* map through products here */}
+        {paginatedProducts.map((product, index) => {
+          return (
+            <div
+              id={`product-${index}`}
+              key={product.id}
+              className="relative flex flex-col justify-self-center gap-2 w-[220px] p-4 border border-gray-300 rounded items-start text-center hover:scale-90 transition-all duration-300"
+            >
+              <button
+                className="cursor-pointer"
+                onClick={() => openProductDetails(product)}
               >
-                ${product.price}
+                <img
+                  src={product.thumbnail}
+                  alt={product.title}
+                  loading="lazy"
+                  decoding="async"
+                />
+              </button>
+              <h3 className="font-bold text-md text-left">{product.title}</h3>
+              <p className="text-md font-semibold uppercase text-stock-available">
+                {product.stock ? `In stock` : `Out of stock`}
               </p>
-              {/* discounted price */}
+              <div className="flex flex-row justify-center items-center gap-2">
+                <Rating
+                  name="read-only"
+                  defaultValue={product.rating}
+                  precision={0.5}
+                  readOnly
+                />
+                <p>({product.rating})</p>
+              </div>
+              <div className="flex flex-row gap-2">
+                <p
+                  className={
+                    "text-gray-400 font-bold text-lg" +
+                    (product.discountPercentage.toFixed(0) != 0
+                      ? " line-through"
+                      : "")
+                  }
+                >
+                  ${product.price}
+                </p>
+                {/* discounted price */}
+                <p
+                  className={
+                    "text-sm text-white bg-price-sale p-1 rounded" +
+                    (product.discountPercentage.toFixed(0) != 0
+                      ? ""
+                      : " hidden")
+                  }
+                >
+                  $
+                  {(
+                    product.price *
+                    (1 - product.discountPercentage.toFixed(0) / 100)
+                  ).toFixed(2)}
+                </p>
+              </div>
+              {/* item counter */}
+              <div className="flex flex-row items-center justify-center p-2 gap-2 w-full mt-2">
+                {/* add item counter functionality */}
+                <input
+                  className="bg-gray-200 hover:bg-gray-400 transition-colors duration-300 p-1 rounded-l-xl w-full cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                  type="button"
+                  value="-"
+                  disabled={getProductQuantity(product.id) === 0}
+                  onClick={() => handleRemoveFromCart(product)}
+                />
+                <span className="w-full">{getProductQuantity(product.id)}</span>
+                <input
+                  className="bg-amber-400 hover:bg-amber-600 transition-colors duration-300 p-1 rounded-r-xl w-full cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                  type="button"
+                  value="+"
+                  disabled={
+                    getProductQuantity(product.id) === 99 || product.stock === 0
+                  }
+                  onClick={() => handleAddToCart(product)}
+                />
+              </div>
               <p
                 className={
-                  "text-sm text-white bg-price-sale p-1 rounded" +
+                  "absolute top-2 left-2 bg-primary text-white py-1 px-2 rounded" +
                   (product.discountPercentage.toFixed(0) != 0 ? "" : " hidden")
                 }
               >
-                $
-                {(
-                  product.price *
-                  (1 - product.discountPercentage.toFixed(0) / 100)
-                ).toFixed(2)}
+                {product.discountPercentage.toFixed(0)}%
               </p>
-            </div>
-            {/* item counter */}
-            <div className="flex flex-row items-center justify-center p-2 gap-2 w-full mt-2">
-              {/* add item counter functionality */}
-              <input
-                className="bg-gray-200 hover:bg-gray-400 transition-colors duration-300 p-1 rounded-l-xl w-full cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-                type="button"
-                value="-"
-                disabled={getProductQuantity(product.id) === 0}
-                onClick={() => handleRemoveFromCart(product)}
-              />
-              <span className="w-full">{getProductQuantity(product.id)}</span>
-              <input
-                className="bg-amber-400 hover:bg-amber-600 transition-colors duration-300 p-1 rounded-r-xl w-full cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-                type="button"
-                value="+"
-                disabled={
-                  getProductQuantity(product.id) === 99 || product.stock === 0
-                }
-                onClick={() => handleAddToCart(product)}
+              <Checkbox
+                className="absolute! top-1 right-2"
+                color="secondary"
+                icon={<FavoriteBorder />}
+                checkedIcon={<Favorite />}
+                checked={wishlistItems[product.id] ? true : false}
+                onChange={(e) => {
+                  if (e.target.checked) {
+                    dispatch(addToList(product));
+                  } else {
+                    dispatch(removeFromList(product));
+                  }
+                }}
               />
             </div>
-            <p
-              className={
-                "absolute top-2 left-2 bg-primary text-white py-1 px-2 rounded" +
-                (product.discountPercentage.toFixed(0) != 0 ? "" : " hidden")
-              }
-            >
-              {product.discountPercentage.toFixed(0)}%
-            </p>
-            <Checkbox
-              className="absolute! top-1 right-2"
-              color="secondary"
-              icon={<FavoriteBorder />}
-              checkedIcon={<Favorite />}
-              checked={wishlistItems[product.id] ? true : false}
-              onChange={(e) => {
-                if (e.target.checked) {
-                  dispatch(addToList(product));
-                } else {
-                  dispatch(removeFromList(product));
-                }
-              }}
-            />
-          </div>
-        );
-      })}
-    </section>
+          );
+        })}
+      </section>
+      {selectedProduct && (
+        <ProductDetails
+          product={selectedProduct}
+          onClose={closeProductDetails}
+        />
+      )}
+    </>
   );
 }
