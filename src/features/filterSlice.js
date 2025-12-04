@@ -19,6 +19,9 @@ export const filterSlice = createSlice({
     changeFilter: (state, action) => {
       state.filter = action.payload;
     },
+    resetFilter: (state) => {
+      state.filter = initialState.filter;
+    },
     changePage: (state, action) => {
       state.filter.currentPage = action.payload;
     },
@@ -27,6 +30,6 @@ export const filterSlice = createSlice({
     },
   },
 });
-export const { changeFilter, changePage, resetPagination } = filterSlice.actions;
+export const { changeFilter, resetFilter, changePage, resetPagination } = filterSlice.actions;
 
 export default filterSlice.reducer;

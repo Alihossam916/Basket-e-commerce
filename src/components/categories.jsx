@@ -3,7 +3,7 @@ import { Link } from "react-router";
 
 // redux imports
 import { useSelector, useDispatch } from "react-redux";
-import { changeFilter } from "../features/filterSlice";
+import { changeFilter, resetFilter } from "../features/filterSlice";
 
 // import MUI icons
 import LocalGroceryStoreIcon from "@mui/icons-material/LocalGroceryStore";
@@ -23,20 +23,13 @@ export default function Categories() {
   const dispatch = useDispatch();
 
   const handleCategory = (category) => {
-    let updatedCategories;
-
-    if (filter.category.includes(category)) {
-      // Remove category if it's already selected
-      updatedCategories = filter.category.filter((cat) => cat !== category);
-    } else {
-      // Add category if it's not selected
-      updatedCategories = [...filter.category, category];
-    }
-
+    // Reset filter before applying new category filter
+    dispatch(resetFilter());
+    // Apply new category filter
     dispatch(
       changeFilter({
         ...filter,
-        category: updatedCategories,
+        category: [category],
       })
     );
   };
