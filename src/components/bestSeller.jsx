@@ -80,7 +80,7 @@ export default function BestSeller() {
                     $
                     {(
                       product.price *
-                      (1 - product.discountPercentage / 100)
+                      (1 - product.discountPercentage.toFixed(0) / 100)
                     ).toFixed(2)}
                   </p>
                 </div>
