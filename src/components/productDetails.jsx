@@ -224,7 +224,7 @@ export default function ProductDetails({ product, onClose }) {
                   />
                 </div>
                 <FormControlLabel
-                  className="w-full flex justify-center p-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+                  className="w-full flex justify-center mx-auto! p-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
                   control={
                     <Checkbox
                       color="secondary"
