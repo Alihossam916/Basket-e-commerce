@@ -30,7 +30,7 @@ The project is organized into the following main directories:
 
 - Lazy loading for images
 - Code splitting for optimal bundle size
-- Memoized components for better performance
+- Memorized components for better performance
 - Local storage for cart persistence
 
 
